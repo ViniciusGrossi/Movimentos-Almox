@@ -5,7 +5,7 @@ import streamlit as st
 st.set_page_config('Consulta Estoque', layout='wide')
 
 # Carregar os dados diretamente do arquivo local
-arquivo = 'C:/Users/User/Documents/Data Analysis/Projeto_Estoque/Movimentos/Movimentos.xlsx'
+arquivo = 'Movimentos.xlsx'
 df = pd.read_excel(arquivo, parse_dates=['Data'])  
 
 # Configurações da página
