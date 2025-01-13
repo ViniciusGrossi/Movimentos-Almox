@@ -6,20 +6,21 @@ st.set_page_config('Consulta Estoque', layout='wide')
 
 # Carregar os dados diretamente do arquivo local
 arquivo = 'Movimentos.xlsx'
-df = pd.read_excel(arquivo, parse_dates=['Data'])  
+df = pd.read_excel(arquivo, parse_dates=['DATA'])  
 
 # Configurações da página
 st.title("Visualização de Estoque")
 st.sidebar.header("Configurações do Filtro")
 
 # Adicionar colunas de Ano e Mês
-df['Ano'] = df['Data'].dt.year
-df['Mes'] = df['Data'].dt.month
+df['Ano'] = df['DATA'].dt.year
+df['Mes'] = df['DATA'].dt.month
 
 # Campo de busca
-descricoes = df['Descricao'].unique().tolist()
-codigos = df['Codigo'].unique().tolist()
-opcoes_busca = descricoes + codigos
+descricoes = df['DESCRICAO'].unique().tolist()
+codigos = df['CODIGO'].unique().tolist()
+referencias = df['REFERENCIA'].unique().tolist()
+opcoes_busca = descricoes + codigos + referencias
 
 # Filtro por Descrição ou Código (Campo de Busca)
 descricao_selecionada = st.selectbox(
@@ -47,9 +48,9 @@ df_filtered = df.copy()
 # Filtro por Descrição ou Código
 if descricao_selecionada:
     if descricao_selecionada in descricoes:
-        df_filtered = df_filtered[df_filtered['Descricao'] == descricao_selecionada]
+        df_filtered = df_filtered[df_filtered['DESCRICAO'] == descricao_selecionada]
     elif descricao_selecionada in codigos:
-        df_filtered = df_filtered[df_filtered['Codigo'] == descricao_selecionada]
+        df_filtered = df_filtered[df_filtered['CODIGO'] == descricao_selecionada]
 
 # Filtros por Ano e Mês
 if anos_selecionados:
@@ -67,8 +68,8 @@ else:
 # Exibir gráfico e dataframe
 if not df_filtered.empty:
     # Calcular soma e média das quantidades
-    total_quantidade = df_filtered['Quantidade'].sum()
-    media_quantidade = df_filtered['Quantidade'].mean()
+    total_quantidade = df_filtered['QUANTIDADE'].sum()
+    media_quantidade = df_filtered['QUANTIDADE'].mean()
 
     # Exibir as métricas
     st.subheader("Métricas Resumo")
@@ -83,19 +84,19 @@ if not df_filtered.empty:
     st.dataframe(df_filtered)
 
     # Gráfico de linha por data
-    df_aux = df_filtered.groupby(['Data'])['Quantidade'].sum().reset_index()
-    fig = px.line(df_aux, x='Data', y='Quantidade', title="Quantidade por Data (com filtros aplicados)")
+    df_aux = df_filtered.groupby(['DATA'])['QUANTIDADE'].sum().reset_index()
+    fig = px.line(df_aux, x='DATA', y='QUANTIDADE', title="Quantidade por Data (com filtros aplicados)")
     st.plotly_chart(fig)
 
     # Gráfico de barras por ano e mês
-    df_aux = df_filtered.groupby(['Ano', 'Mes'])['Quantidade'].sum().reset_index()
+    df_aux = df_filtered.groupby(['Ano', 'Mes'])['QUANTIDADE'].sum().reset_index()
     fig = px.bar(
         df_aux,
         x='Ano',
-        y='Quantidade',
+        y='QUANTIDADE',
         color='Mes',
         title="Quantidade por Ano e Mês (com filtros aplicados)",
-        labels={'Quantidade': 'Quantidade Total', 'Ano': 'Ano'}
+        labels={'QUANTIDADE': 'Quantidade Total', 'Ano': 'Ano'}
     )
     st.plotly_chart(fig)
 else:
