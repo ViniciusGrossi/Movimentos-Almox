@@ -52,7 +52,7 @@ if descricao_selecionada:
     elif descricao_selecionada in codigos:
         df_filtered = df_filtered[df_filtered['CODIGO'] == descricao_selecionada]
     elif descricao_selecionada in referencias:
-        df_filtered = df_filtered[df_filtered['REFERENCIAS'] == descricao_selecionada]
+        df_filtered = df_filtered[df_filtered['REFERENCIA'] == descricao_selecionada]
 
 # Filtros por Ano e Mês
 if anos_selecionados:
@@ -88,6 +88,7 @@ if not df_filtered.empty:
     # Gráfico de linha por data
     df_aux = df_filtered.groupby(['DATA'])['QUANTIDADE'].sum().reset_index()
     fig = px.line(df_aux, x='DATA', y='QUANTIDADE', title="Quantidade por Data (com filtros aplicados)")
+    fig.update_layout(yaxis=dict(range=[0, df_aux['QUANTIDADE'].max() + 10]))
     st.plotly_chart(fig)
 
     # Gráfico de barras por ano e mês
