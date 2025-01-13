@@ -51,7 +51,7 @@ if descricao_selecionada:
         df_filtered = df_filtered[df_filtered['DESCRICAO'] == descricao_selecionada]
     elif descricao_selecionada in codigos:
         df_filtered = df_filtered[df_filtered['CODIGO'] == descricao_selecionada]
-    elif descricao_selecionada in codigos:
+    elif descricao_selecionada in referencias:
         df_filtered = df_filtered[df_filtered['REFERENCIAS'] == descricao_selecionada]
 
 # Filtros por Ano e Mês
